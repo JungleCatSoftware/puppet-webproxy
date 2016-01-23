@@ -67,26 +67,4 @@ class webproxy (
     proxy => 'http://accounts-api',
   }
 
-  # For Testing
-  nginx::resource::vhost { 'accounts-backend':
-    listen_port => 3000,
-    www_root    => '/srv/accounts-backend',
-  }
-  nginx::resource::vhost { 'accounts-api-backend':
-    listen_port => 3001,
-    www_root    => '/srv/accounts-api-backend',
-  }
-
-  file { ['/srv/accounts-api-backend', '/srv/accounts-backend']:
-    ensure => directory,
-  }
-  file { '/srv/accounts-api-backend/test.txt':
-    ensure => file,
-    content => "API\n",
-  }
-  file { '/srv/accounts-backend/test.txt':
-    ensure => file,
-    content => "ACCOUNTS\n",
-  }
-
 }

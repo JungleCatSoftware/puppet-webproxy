@@ -35,7 +35,54 @@
 #
 # Copyright 2016 Your name here, unless otherwise noted.
 #
-class webproxy {
+class webproxy (
+  $basehostname      = 'example.net',
+  $accounts_pool     = undef,
+  $accounts_api_pool = undef,
+){
 
+  validate_string($basehostname)
+  validate_array($accounts_pool)
+  validate_array($accounts_api_pool)
+
+  include nginx
+
+  # Upstream server pools
+  nginx::resource::upstream { 'accounts':
+    members => $accounts_pool,
+  }
+  nginx::resource::upstream { 'accounts-api':
+    members => $accounts_api_pool,
+  }
+
+  # VHosts
+  nginx::resource::vhost { "accounts.${basehostname}":
+    proxy => 'http://accounts',
+  }
+  nginx::resource::vhost { "api.accounts.${basehostname}":
+    proxy => 'http://accounts-api',
+  }
+
+  # For Testing
+  nginx::resource::vhost { 'accounts-backend':
+    listen_port => 3000,
+    www_root    => '/srv/accounts-backend',
+  }
+  nginx::resource::vhost { 'accounts-api-backend':
+    listen_port => 3001,
+    www_root    => '/srv/accounts-api-backend',
+  }
+
+  file { ['/srv/accounts-api-backend', '/srv/accounts-backend']:
+    ensure => directory,
+  }
+  file { '/srv/accounts-api-backend/test.txt':
+    ensure => file,
+    content => "API\n",
+  }
+  file { '/srv/accounts-backend/test.txt':
+    ensure => file,
+    content => "ACCOUNTS\n",
+  }
 
 }

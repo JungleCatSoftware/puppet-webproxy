@@ -59,6 +59,10 @@ class webproxy (
   nginx::resource::vhost { "accounts.${basehostname}":
     proxy => 'http://accounts',
   }
+  nginx::resource::location { '~ /api/(.*)':
+    vhost => "accounts.${basehostname}",
+    proxy => 'http://accounts-api/$1',
+  }
   nginx::resource::vhost { "api.accounts.${basehostname}":
     proxy => 'http://accounts-api',
   }

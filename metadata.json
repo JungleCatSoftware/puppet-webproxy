@@ -1,0 +1,14 @@
+{
+  "name": "junglecatsoftware-webproxy",
+  "version": "0.1.0",
+  "author": "Jungle Cat Software",
+  "summary": "Puppet module to configure Nginx as a proxy to backend services",
+  "license": "GPLv3",
+  "source": "https://github.com/JungleCatSoftware/puppet-webproxy",
+  "project_page": "https://github.com/JungleCatSoftware/puppet-webproxy",
+  "issues_url": "https://github.com/JungleCatSoftware/puppet-webproxy/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+

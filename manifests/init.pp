@@ -59,12 +59,20 @@ class webproxy (
   nginx::resource::vhost { "authservices.${basehostname}":
     proxy => 'http://authservicesweb',
   }
-  nginx::resource::location { '~ /api/(.*)':
-    vhost => "authservices.${basehostname}",
-    proxy => 'http://authservicesapi/$1',
-  }
   nginx::resource::vhost { "api.authservices.${basehostname}":
     proxy => 'http://authservicesapi',
+  }
+
+  # Locations
+  nginx::resource::location { '~ /api/(.*)':
+    vhost       => "authservices.${basehostname}",
+    proxy       => 'http://authservicesapi/$1',
+    raw_prepend => 'error_page 502 = @apidown;',
+  }
+  nginx::resource::location { '@apidown':
+    vhost         => "authservices.${basehostname}",
+    www_root      => '/srv/empty',
+    rewrite_rules => ["^/api/(.*)\$ http://api.authservices.${basehostname}/\$1 redirect"],
   }
 
 }

@@ -36,35 +36,35 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class webproxy (
-  $basehostname      = 'example.net',
-  $accounts_pool     = undef,
-  $accounts_api_pool = undef,
+  $basehostname         = 'example.net',
+  $authservicesweb_pool = undef,
+  $authservicesapi_pool = undef,
 ){
 
   validate_string($basehostname)
-  validate_array($accounts_pool)
-  validate_array($accounts_api_pool)
+  validate_array($authservicesweb_pool)
+  validate_array($authservicesapi_pool)
 
   include nginx
 
   # Upstream server pools
-  nginx::resource::upstream { 'accounts':
-    members => $accounts_pool,
+  nginx::resource::upstream { 'authservicesweb':
+    members => $authservicesweb_pool,
   }
-  nginx::resource::upstream { 'accounts-api':
-    members => $accounts_api_pool,
+  nginx::resource::upstream { 'authservicesapi':
+    members => $authservicesapi_pool,
   }
 
   # VHosts
-  nginx::resource::vhost { "accounts.${basehostname}":
-    proxy => 'http://accounts',
+  nginx::resource::vhost { "authservices.${basehostname}":
+    proxy => 'http://authservicesweb',
   }
   nginx::resource::location { '~ /api/(.*)':
-    vhost => "accounts.${basehostname}",
-    proxy => 'http://accounts-api/$1',
+    vhost => "authservices.${basehostname}",
+    proxy => 'http://authservicesapi/$1',
   }
-  nginx::resource::vhost { "api.accounts.${basehostname}":
-    proxy => 'http://accounts-api',
+  nginx::resource::vhost { "api.authservices.${basehostname}":
+    proxy => 'http://authservicesapi',
   }
 
 }

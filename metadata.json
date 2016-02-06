@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/JungleCatSoftware/puppet-webproxy/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"jfryman","version_requirement":">= 0.2.7"}
+    {"name":"jfryman-nginx","version_requirement":">= 0.2.7"}
   ]
 }
 

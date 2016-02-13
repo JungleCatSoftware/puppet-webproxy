@@ -75,4 +75,12 @@ class webproxy (
     rewrite_rules => ["^/api/(.*)\$ http://api.authservices.${basehostname}/\$1 redirect"],
   }
 
+  File['/etc/nginx/sites-available'] -> Nginx::Resource::Upstream<| |>
+  File['/etc/nginx/sites-available'] -> Nginx::Resource::Vhost<| |>
+  File['/etc/nginx/sites-available'] -> Nginx::Resource::Location<| |>
+
+  File['/etc/nginx/sites-enabled'] -> Nginx::Resource::Upstream<| |>
+  File['/etc/nginx/sites-enabled'] -> Nginx::Resource::Vhost<| |>
+  File['/etc/nginx/sites-enabled'] -> Nginx::Resource::Location<| |>
+
 }
